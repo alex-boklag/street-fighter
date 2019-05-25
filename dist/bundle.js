@@ -113,7 +113,7 @@ new _src_javascript_app__WEBPACK_IMPORTED_MODULE_0__["default"]();
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "html,\r\nbody {\r\n    height: 100%;\r\n    width: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n}\r\n\r\n#root {\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    justify-content: center;\r\n    height: 100%;\r\n    width: 100%;\r\n}\r\n\r\n.fighters {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    flex: 1;\r\n    flex-wrap: wrap;\r\n    padding: 0 15px;\r\n}\r\n\r\n.fighter {\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 20px;\r\n}\r\n\r\n.fighter:hover {\r\n    box-shadow: 0 0 50px 10px rgba(0,0,0,0.06);\r\n    cursor: pointer;\r\n}\r\n\r\n.name {\r\n    align-self: center;\r\n    font-size: 21px;\r\n    margin-top: 20px;\r\n}\r\n\r\n.fighter-image {\r\n    height: 260px;\r\n}\r\n\r\n#loading-overlay {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    font-size: 18px;\r\n    background: rgba(255, 255, 255, 0.7);\r\n    visibility: hidden;\r\n}\r\n", ""]);
+exports.push([module.i, "html, body {\r\n    height: 100%;\r\n    width: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    padding-top: 200px;\r\n}\r\n\r\n#root {\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    justify-content: center;\r\n    height: 100%;\r\n    width: 100%;\r\n}\r\n\r\n.fighters {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    flex: 1;\r\n    flex-wrap: wrap;\r\n    padding: 0 15px;\r\n}\r\n\r\n.fighter {\r\n    display: flex;\r\n    flex-direction: column;\r\n    border-radius: 20px;\r\n    padding: 20px;\r\n}\r\n\r\n.fighter:hover {\r\n    box-shadow: 0 0 50px 10px rgba(4, 252, 4, 0.5);\r\n    cursor: pointer;\r\n}\r\n\r\n.name {\r\n    align-self: center;\r\n    font-size: 21px;\r\n    margin-top: 20px;\r\n}\r\n\r\n.fighter-image {\r\n    height: 260px;\r\n}\r\n\r\n#loading-overlay {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    font-size: 18px;\r\n    background: rgba(255, 255, 255, 0.7);\r\n    visibility: hidden;\r\n}\r\n\r\n.modal-content {\r\n    border-radius: 20px;\r\n}\r\n\r\n#start {\r\n    position: fixed;\r\n    left: 90vw;\r\n    top: 1vh;\r\n    width: 8vw;\r\n}", ""]);
 
 
 
@@ -770,6 +770,88 @@ _defineProperty(App, "loadingElement", document.getElementById('loading-overlay'
 
 /***/ }),
 
+/***/ "./src/javascript/fight.js":
+/*!*********************************!*\
+  !*** ./src/javascript/fight.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function fight(fighter1, fighter2) {
+  let winner;
+  let damage;
+
+  while (fighter1.health > 0 && fighter2.health > 0) {
+    damage = fighter1.getHitPower() - fighter2.getBlockPower();
+
+    if (damage > 0) {
+      fighter2.health -= damage;
+    }
+
+    if (fighter2.health <= 0) {
+      winner = fighter1.name;
+      break;
+    }
+
+    damage = fighter2.getHitPower() - fighter1.getBlockPower();
+
+    if (damage > 0) {
+      fighter1.health -= damage;
+    }
+
+    if (fighter1.health <= 0) {
+      winner = fighter2.name;
+      break;
+    }
+  }
+
+  alert(`The winner is ${winner}!`);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (fight);
+
+/***/ }),
+
+/***/ "./src/javascript/fighter.js":
+/*!***********************************!*\
+  !*** ./src/javascript/fighter.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_randomHepler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/randomHepler */ "./src/javascript/helpers/randomHepler.js");
+
+
+class Fighter {
+  constructor(name, health, attack, defense) {
+    this.name = name;
+    this.health = health;
+    this.attack = attack;
+    this.defense = defense;
+    this.criticalHitChance;
+    this.dodgeChance;
+  }
+
+  getHitPower() {
+    this.criticalHitChance = Object(_helpers_randomHepler__WEBPACK_IMPORTED_MODULE_0__["default"])(1, 2);
+    return this.attack * this.criticalHitChance;
+  }
+
+  getBlockPower() {
+    this.dodgeChance = Object(_helpers_randomHepler__WEBPACK_IMPORTED_MODULE_0__["default"])(1, 2);
+    return this.defense * this.dodgeChance;
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Fighter);
+
+/***/ }),
+
 /***/ "./src/javascript/fighterView.js":
 /*!***************************************!*\
   !*** ./src/javascript/fighterView.js ***!
@@ -785,19 +867,25 @@ __webpack_require__.r(__webpack_exports__);
 class FighterView extends _view__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(fighter, handleClick) {
     super();
-    this.createFighter(fighter, handleClick);
+    this.createFighterView(fighter, handleClick);
   }
 
-  createFighter(fighter, handleClick) {
+  createFighterView(fighter, handleClick) {
     const {
       name,
       source
     } = fighter;
     const nameElement = this.createName(name);
     const imageElement = this.createImage(source);
+    const attributes = {
+      "id": name,
+      "data-toggle": "modal",
+      "data-target": "#modalWindow"
+    };
     this.element = this.createElement({
       tagName: 'div',
-      className: 'fighter'
+      className: 'fighter',
+      attributes
     });
     this.element.append(imageElement, nameElement);
     this.element.addEventListener('click', event => handleClick(event, fighter), false);
@@ -841,7 +929,15 @@ class FighterView extends _view__WEBPACK_IMPORTED_MODULE_0__["default"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view */ "./src/javascript/view.js");
 /* harmony import */ var _fighterView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fighterView */ "./src/javascript/fighterView.js");
+/* harmony import */ var _services_fightersService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/fightersService */ "./src/javascript/services/fightersService.js");
+/* harmony import */ var _fight__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fight */ "./src/javascript/fight.js");
+/* harmony import */ var _helpers_saveHepler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./helpers/saveHepler */ "./src/javascript/helpers/saveHepler.js");
+/* harmony import */ var _helpers_chooseHepler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./helpers/chooseHepler */ "./src/javascript/helpers/chooseHepler.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
 
 
 
@@ -852,11 +948,16 @@ class FightersView extends _view__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
     _defineProperty(this, "fightersDetailsMap", new Map());
 
+    _defineProperty(this, "fightersForFight", []);
+
     this.handleClick = this.handleFighterClick.bind(this);
-    this.createFighters(fighters);
+    this.createFightersView(fighters);
+    this.handleSaveClick();
+    this.handleChooseClick();
+    this.handleStartClick();
   }
 
-  createFighters(fighters) {
+  createFightersView(fighters) {
     const fighterElements = fighters.map(fighter => {
       const fighterView = new _fighterView__WEBPACK_IMPORTED_MODULE_1__["default"](fighter, this.handleClick);
       return fighterView.element;
@@ -868,11 +969,52 @@ class FightersView extends _view__WEBPACK_IMPORTED_MODULE_0__["default"] {
     this.element.append(...fighterElements);
   }
 
-  handleFighterClick(event, fighter) {
-    this.fightersDetailsMap.set(fighter._id, fighter);
-    console.log('clicked'); // get from map or load info and add to fightersMap
-    // show modal with fighter info
-    // allow to edit health and power in this modal
+  async handleFighterClick(event, fighter) {
+    let id = fighter._id;
+    let hasFighter = this.fightersDetailsMap.has(`${id}`);
+
+    if (!hasFighter) {
+      let fighterDetails = await _services_fightersService__WEBPACK_IMPORTED_MODULE_2__["fighterService"].getFighterDetails(fighter._id);
+      this.fightersDetailsMap.set(fighter._id, fighterDetails);
+    }
+
+    document.getElementById('name').innerHTML = this.fightersDetailsMap.get(id).name;
+    document.getElementById('health').value = this.fightersDetailsMap.get(id).health;
+    document.getElementById('attack').value = this.fightersDetailsMap.get(id).attack;
+    document.getElementById('defense').value = this.fightersDetailsMap.get(id).defense;
+  }
+
+  handleSaveClick() {
+    document.getElementById('save').addEventListener('click', () => Object(_helpers_saveHepler__WEBPACK_IMPORTED_MODULE_4__["default"])(this.fightersDetailsMap));
+  }
+
+  handleChooseClick() {
+    document.getElementById('choose').addEventListener('click', () => {
+      if (this.fightersForFight.length < 2) {
+        let fighter = Object(_helpers_chooseHepler__WEBPACK_IMPORTED_MODULE_5__["default"])(this.fightersDetailsMap);
+        this.fightersForFight.push(fighter);
+        let fighterView = document.getElementById(fighter.name);
+        fighterView.style = "box-shadow: 0 0 50px 10px rgba(4, 252, 4, 0.5)";
+      } else {
+        alert('You have already chosen 2 fighters for the fight. Please, start a game.');
+      }
+    });
+  }
+
+  handleStartClick() {
+    document.getElementById('start').addEventListener('click', () => {
+      if (this.fightersForFight.length == 2) {
+        alert('The fight is starting!');
+        setTimeout(() => {
+          Object(_fight__WEBPACK_IMPORTED_MODULE_3__["default"])(this.fightersForFight[0], this.fightersForFight[1]);
+          this.fightersForFight = [];
+          let fightersView = document.querySelectorAll('.fighter');
+          fightersView.forEach(fighterView => fighterView.style = "box-shadow: 0");
+        }, 2000);
+      } else {
+        alert('Please, enter 2 fighters for the fight.');
+      }
+    });
   }
 
 }
@@ -891,7 +1033,7 @@ class FightersView extends _view__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "callApi", function() { return callApi; });
-const API_URL = 'https://api.github.com/repos/binary-studio-academy/stage-2-es6-for-everyone/contents/resources/api/';
+const API_URL = 'https://bsa2019-nodejs.herokuapp.com/';
 
 function callApi(endpoind, method) {
   const url = API_URL + endpoind;
@@ -904,6 +1046,95 @@ function callApi(endpoind, method) {
 }
 
 
+
+/***/ }),
+
+/***/ "./src/javascript/helpers/chooseHepler.js":
+/*!************************************************!*\
+  !*** ./src/javascript/helpers/chooseHepler.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _fighter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../fighter */ "./src/javascript/fighter.js");
+
+
+function chooseHelper(fightersDetailsMap) {
+  let name = document.getElementById('name').innerHTML;
+  let health = document.getElementById('health').value;
+  let attack = document.getElementById('attack').value;
+  let defense = document.getElementById('defense').value;
+  let id;
+  fightersDetailsMap.forEach(fighter => {
+    if (name == fighter.name) {
+      id = fighter._id;
+    }
+  });
+  let fighter = new _fighter__WEBPACK_IMPORTED_MODULE_0__["default"](name, health, attack, defense);
+  return fighter;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (chooseHelper);
+
+/***/ }),
+
+/***/ "./src/javascript/helpers/randomHepler.js":
+/*!************************************************!*\
+  !*** ./src/javascript/helpers/randomHepler.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function randomInteger(min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
+  rand = Math.round(rand);
+  return rand;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (randomInteger);
+
+/***/ }),
+
+/***/ "./src/javascript/helpers/saveHepler.js":
+/*!**********************************************!*\
+  !*** ./src/javascript/helpers/saveHepler.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function saveNewInfo(fightersDetailsMap) {
+  let name = document.getElementById('name').innerHTML;
+  let health = document.getElementById('health').value;
+  let attack = document.getElementById('attack').value;
+  let defense = document.getElementById('defense').value;
+  let id;
+  fightersDetailsMap.forEach(fighter => {
+    if (name == fighter.name) {
+      id = fighter._id;
+    }
+  });
+
+  if (health > 0 && health <= 100 && attack > 0 && attack <= 10 && defense > 0 && defense <= 10) {
+    fightersDetailsMap.get(id).health = health;
+    fightersDetailsMap.get(id).attack = attack;
+    fightersDetailsMap.get(id).defense = defense;
+    alert(`The information was successfully updated!`);
+  } else {
+    alert(`The information wasn't updated! Please, enter values in the following ranges:
+                Health: 1-100
+                Attack: 1-10
+                Defense: 1-10
+        `);
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (saveNewInfo);
 
 /***/ }),
 
@@ -923,16 +1154,22 @@ __webpack_require__.r(__webpack_exports__);
 class FighterService {
   async getFighters() {
     try {
-      const endpoint = 'fighters.json';
+      const endpoint = 'user';
       const apiResult = await Object(_helpers_apiHelper__WEBPACK_IMPORTED_MODULE_0__["callApi"])(endpoint, 'GET');
-      return JSON.parse(atob(apiResult.content));
+      return apiResult;
     } catch (error) {
       throw error;
     }
   }
 
-  async getFighterDetails(_id) {// implement this method
-    // endpoint - `details/fighter/${_id}.json`;
+  async getFighterDetails(_id) {
+    try {
+      const endpoint = `user/${_id}`;
+      const apiResult = await Object(_helpers_apiHelper__WEBPACK_IMPORTED_MODULE_0__["callApi"])(endpoint, 'GET');
+      return apiResult;
+    } catch (error) {
+      throw error;
+    }
   }
 
 }
